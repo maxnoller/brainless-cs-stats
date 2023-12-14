@@ -1,7 +1,7 @@
 FROM node:lts-alpine3.18 
 
 WORKDIR /app
-COPY rushb-stats-site/package.json rusb-stats-site/package-lock.json ./
+COPY rushb-stats-site/package.json rushb-stats-site/package-lock.json ./
 RUN npm install
 
 COPY ./rushb-stats-site/. .
