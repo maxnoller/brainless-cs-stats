@@ -1,10 +1,10 @@
 FROM node:lts-alpine3.18 
 
 WORKDIR /app
-COPY package.json yarn.lock ./
+COPY rushb-stats-site/package.json rusb-stats.site/yarn.lock ./
 RUN yarn install
 
-COPY . .
+COPY ./rushb-stats-site/. .
 
 RUN yarn build
 RUN rm -rf src/ static/ emailTemplates/
