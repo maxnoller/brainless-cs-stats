@@ -6,6 +6,9 @@
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
+
+import Icon from '@iconify/svelte';
+import brainfIcon from '@iconify/icons-arcticons/brainf';
 </script>
 
 <!-- App Shell -->
@@ -14,7 +17,10 @@
 		<!-- App Bar -->
 		<AppBar>
 			<svelte:fragment slot="lead">
-				<strong class="text-xl uppercase">Skeleton</strong>
+                <div class="flex flex-row">
+<Icon icon={brainfIcon} style="font-size: 32px;" />
+				<strong class="text-xl uppercase">BRAINLESS</strong>
+                </div>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
 				<a
