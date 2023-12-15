@@ -1,5 +1,8 @@
 FROM node:lts-alpine3.18 
 
+ENV GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+ENV GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+
 WORKDIR /app
 COPY rushb-stats-site/package.json rushb-stats-site/package-lock.json ./
 RUN npm install
