@@ -41,7 +41,9 @@
   },
   "type": "module",
   "dependencies": {
+    "@auth/sveltekit": "^0.4.0",
     "@floating-ui/dom": "1.5.3",
-    "@laihoe/demoparser2": "^0.16.1"
+    "@laihoe/demoparser2": "^0.16.1",
+    "next-auth-steam": "^0.1.5"
   }
 }

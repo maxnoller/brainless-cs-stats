@@ -9,6 +9,13 @@
 
 import Icon from '@iconify/svelte';
 import brainfIcon from '@iconify/icons-arcticons/brainf';
+import type { LayoutServerLoad } from './$types';
+
+export const load: LayoutServerLoad = async (event) => {
+  return {
+    session: await event.locals.getSession()
+  };
+};
 </script>
 
 <!-- App Shell -->
