@@ -1,10 +1,12 @@
 from flask import Flask, request, jsonify
 from gevent.pywsgi import WSGIServer
 from steam.client import SteamClient
+from steam.guard import SteamAuthenticator
 from csgo.client import CSGOClient
 from google.protobuf.json_format import MessageToJson
 from csgo import sharecode
 import json
+import os
 
 app = Flask(__name__)
 client = SteamClient()
@@ -37,7 +39,9 @@ def submit_demo():
     return jsonify(MessageToJson(match_info))
 
 if __name__ == "__main__":
-    client.cli_login(username="", password="")
     print("Logged in")
+    secrets = json.loads(os.getenv("STEAM_2FA"))
+    sa = SteamAuthenticator(secrets)
+    client.login(username=os.getenv("STEAM_USER"), password=os.getenv("STEAM_PASSWORD"), two_factor_code=sa.get_code())
     http_server = WSGIServer(('0.0.0.0', 5000), app)
     http_server.serve_forever()
