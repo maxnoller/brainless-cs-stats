@@ -8,7 +8,7 @@ from csgo import sharecode
 import json
 import os
 import logging
-logging.basicConfig(encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 client = SteamClient()
