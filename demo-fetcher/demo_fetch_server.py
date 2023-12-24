@@ -1,3 +1,4 @@
+from google.protobuf.message import Message
 from pika.adapters.gevent_connection import GeventConnection
 from steam.client import SteamClient
 from steam.guard import SteamAuthenticator
@@ -53,13 +54,7 @@ def fetch_match_info(demo_code):
     cs.request_full_match_info(matchid=Sharecode['matchid'], outcomeid=Sharecode['outcomeid'], token=Sharecode['token'])
     response, = cs.wait_event('full_match_info')
     print("[CS-GO] response: %s" % response)
-    return response
-
-#@app.route('/submit_demo', methods=['POST'])
-#def submit_demo():
-#    demo_code = request.get_json()['demo_code']
-#    match_info = fetch_match_info(demo_code)
-#    return jsonify(MessageToJson(match_info))
+    return MessageToJson(response)
 
 def demo_callback(ch, method, properties, body):
     print(f" [x] received {body}")
@@ -67,7 +62,7 @@ def demo_callback(ch, method, properties, body):
 LOGGER = logging.getLogger(__name__)
 
 AMQP_URL = os.getenv("AMQP_URL")
-QUEUE = "demo_urls"
+QUEUE = "demo_codes"
 
 def on_connection_open(connection):
     LOGGER.info('Connection opened')
@@ -86,6 +81,7 @@ def on_channel_open(channel):
 def setup_queue(channel):
     LOGGER.info('Declaring queue %s', QUEUE)
     channel.queue_declare(queue=QUEUE, durable=True, callback=lambda frame: on_queue_declareok(channel))
+    channel.queue_declare(queue="demo_urls", durable=True)
 
 
 def on_queue_declareok(channel):
@@ -101,7 +97,8 @@ def start_consuming(channel):
 def on_message(channel, method, properties, body):
     LOGGER.info('Received message: %s', body)
     channel.basic_ack(method.delivery_tag)
-
+    data = fetch_match_info(body)
+    LOGGER.info(data)
 
 def run():
     connection = GeventConnection(
