@@ -27,6 +27,27 @@ def start_csgo():
 def gc_ready():
     print("[CS-GO] info: %s" % cs.ready)
 
+@client.on('disconnected')
+def handle_disconnect():
+    print("Disconnected from Steam.")
+    reconnect()
+
+def reconnect(attempts=0):
+    max_retries = 5  # Set a max number of retries
+    wait_time = min(2 ** attempts, 60)  # Exponential backoff, max wait is 60 seconds
+
+    if attempts < max_retries:
+        print(f"Attempting to reconnect in {wait_time} seconds...")
+        time.sleep(wait_time)  # Wait before reconnecting
+        try:
+            client.reconnect(maxdelay=30)  # Attempt to reconnect
+        except Exception as e:
+            print(f"Reconnect failed: {e}")
+            reconnect(attempts + 1)
+    else:
+        print("Max reconnection attempts reached. Exiting.")
+        # Handle max retries reached (e.g., exit or alert the user)
+
 def fetch_match_info(demo_code):
     Sharecode = getSharecodeInfo(demo_code)
     cs.request_full_match_info(matchid=Sharecode['matchid'], outcomeid=Sharecode['outcomeid'], token=Sharecode['token'])
