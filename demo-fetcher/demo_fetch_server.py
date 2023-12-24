@@ -9,7 +9,7 @@ import os
 import logging
 import pika
 import gevent
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 client = SteamClient()
 cs = CSGOClient(client)
@@ -64,7 +64,6 @@ def fetch_match_info(demo_code):
 def demo_callback(ch, method, properties, body):
     print(f" [x] received {body}")
 
-logging.basicConfig(level=logging.INFO)
 LOGGER = logging.getLogger(__name__)
 
 AMQP_URL = os.getenv("AMQP_URL")
