@@ -85,10 +85,9 @@ def on_message(channel, method, properties, body):
 def run():
     connection = GeventConnection(
         parameters=pika.URLParameters(AMQP_URL),
-        on_open_callback=on_connection_open,
-        custom_ioloop=gevent.get_hub().loop)
+        on_open_callback=on_connection_open)
 
-    gevent.spawn(connection.ioloop.start)
+    gevent.spawn(connection.ioloop.start())
     return connection
 
 
