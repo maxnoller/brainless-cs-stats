@@ -86,7 +86,6 @@ def run():
     connection = GeventConnection(
         parameters=pika.URLParameters(AMQP_URL),
         on_open_callback=on_connection_open,
-        connection_class=GeventConnection,
         custom_ioloop=gevent.get_hub().loop)
 
     gevent.spawn(connection.ioloop.start)
