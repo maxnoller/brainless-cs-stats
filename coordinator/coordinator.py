@@ -31,9 +31,9 @@ def send_to_queue(match_code):
     connection = pika.BlockingConnection(pika.URLParameters(AMQP_URL))
     channel = connection.channel()
 
-    channel.queue_declare(queue='demo_code', durable=True)
+    channel.queue_declare(queue='demo_urls', durable=True)
     channel.basic_publish(exchange='',
-                          routing_key='demo_code',
+                          routing_key='demo_urls',
                           body=match_code,
                           properties=pika.BasicProperties(
                               delivery_mode=2,  # make message persistent
