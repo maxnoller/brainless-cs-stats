@@ -85,7 +85,7 @@ def on_channel_open(channel):
 
 def setup_queue(channel):
     LOGGER.info('Declaring queue %s', QUEUE)
-    channel.queue_declare(queue=QUEUE, callback=lambda frame: on_queue_declareok(channel))
+    channel.queue_declare(queue=QUEUE, durable=True, callback=lambda frame: on_queue_declareok(channel))
 
 
 def on_queue_declareok(channel):
