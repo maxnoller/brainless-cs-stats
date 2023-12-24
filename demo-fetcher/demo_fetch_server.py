@@ -8,6 +8,7 @@ import json
 import os
 import logging
 import pika
+import gevent
 logging.basicConfig(level=logging.DEBUG)
 
 client = SteamClient()
