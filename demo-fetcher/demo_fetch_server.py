@@ -97,8 +97,7 @@ def start_consuming(channel):
 def on_message(channel, method, properties, body):
     LOGGER.info('Received message: %s', body)
     channel.basic_ack(method.delivery_tag)
-    LOGGER.info(str(body))
-    data = fetch_match_info(str(body))
+    data = fetch_match_info(body.decode("utf-8"))
     LOGGER.info(data)
 
 def run():
