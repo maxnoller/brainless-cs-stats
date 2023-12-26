@@ -1,3 +1,5 @@
+import gevent.monkey
+gevent.monkey.patch_all()
 from google.protobuf.message import Message
 from pika.adapters.gevent_connection import GeventConnection
 from steam.client import SteamClient
@@ -11,8 +13,6 @@ import logging
 import pika
 import gevent
 logging.basicConfig(level=logging.INFO)
-import gevent.monkey
-gevent.monkey.patch_all()
 
 client = SteamClient()
 cs = CSGOClient(client)
