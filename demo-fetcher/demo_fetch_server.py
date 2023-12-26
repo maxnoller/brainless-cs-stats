@@ -11,6 +11,8 @@ import logging
 import pika
 import gevent
 logging.basicConfig(level=logging.INFO)
+import gevent.monkey
+gevent.monkey.patch_all()
 
 client = SteamClient()
 cs = CSGOClient(client)
