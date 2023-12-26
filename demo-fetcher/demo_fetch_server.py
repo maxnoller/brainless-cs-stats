@@ -12,6 +12,7 @@ import os
 import logging
 import pika
 import gevent
+from gevent.event import AsyncResult
 logging.basicConfig(level=logging.INFO)
 
 client = SteamClient()
@@ -54,9 +55,22 @@ def reconnect(attempts=0):
 def fetch_match_info(demo_code):
     Sharecode = getSharecodeInfo(demo_code)
     cs.request_full_match_info(matchid=Sharecode['matchid'], outcomeid=Sharecode['outcomeid'], token=Sharecode['token'])
-    response, = cs.wait_event('full_match_info')
-    print("[CS-GO] response: %s" % response)
-    return MessageToJson(response)
+
+    # Create an AsyncResult object
+    result = AsyncResult()
+
+    # Define a callback function that will be called when the event is received
+    def on_full_match_info(event, response):
+        result.set(MessageToJson(response))
+
+    # Register the callback with the event
+    cs.on('full_match_info', on_full_match_info)
+
+    # Wait for the result in a non-blocking way
+    response_json = result.get(timeout=30)  # Set an appropriate timeout
+    cs.remove_event_handler('full_match_info', on_full_match_info)
+
+    return response_json
 
 def demo_callback(ch, method, properties, body):
     print(f" [x] received {body}")
