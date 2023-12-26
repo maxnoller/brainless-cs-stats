@@ -42,7 +42,7 @@ def reconnect(attempts=0):
 
     if attempts < max_retries:
         print(f"Attempting to reconnect in {wait_time} seconds...")
-        time.sleep(wait_time)  # Wait before reconnecting
+        gevent.sleep(wait_time)
         try:
             client.reconnect(maxdelay=30)  # Attempt to reconnect
         except Exception as e:
